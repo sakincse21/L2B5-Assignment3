@@ -82,4 +82,4 @@ npm start
 
 ## 📽️ Explanation Video
 
-📹 [Watch Video](https://www.youtube.com/@TheOutsideMatrix)
+📹 [Watch Video](https://youtu.be/B8krmfGe1QM)
