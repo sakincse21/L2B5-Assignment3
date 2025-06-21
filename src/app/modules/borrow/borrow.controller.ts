@@ -1,23 +1,21 @@
 import { Request, Response } from "express";
 import Borrow from "./borrow.model";
+import handleError from "../../utils/errorHandler";
 
 const borrowBook = async (req:Request, res: Response)=>{
     try {
         const payload = req.body;
-        const data = await Borrow.create(payload);
-
+        const data = await Borrow.create(payload)
+        if(!data){
+            throw new Error("No Borrow Record Created")
+        }
         res.send({
             message: "Book borrowed successfully",
             success: true,
             data
         })
     } catch (error: unknown) {
-        const errorMessage = (error instanceof Error) ? error.message : "Something went wrong";
-        res.status(200).json({
-            message: errorMessage,
-            success: false,
-            error
-        });
+        handleError(error,res,200);
     }
 }
 
@@ -43,26 +41,21 @@ const borrowedBookSummary = async (req:Request, res: Response)=>{
             },{
                 $project:{
                     _id: 0,
-                    totalQuantity: 1,
                     book: {
                         title: "$book.title",
                         isbn: "$book.isbn"
-                    }
+                    },
+                    totalQuantity: 1
                 }
             }
         ])
         res.send({
-            message: "Book borrowed successfully",
+            message: "Borrowed books summary retrieved successfully",
             success: true,
             data
         })
     } catch (error: unknown) {
-        const errorMessage = (error instanceof Error) ? error.message : "Something went wrong";
-        res.status(200).json({
-            message: errorMessage,
-            success: false,
-            error
-        });
+        handleError(error,res,200);
     }
 }
 

@@ -14,10 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.borrowControllers = void 0;
 const borrow_model_1 = __importDefault(require("./borrow.model"));
+const errorHandler_1 = __importDefault(require("../../utils/errorHandler"));
 const borrowBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const payload = req.body;
         const data = yield borrow_model_1.default.create(payload);
+        if (!data) {
+            throw new Error("No Borrow Record Created");
+        }
         res.send({
             message: "Book borrowed successfully",
             success: true,
@@ -25,12 +29,7 @@ const borrowBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     catch (error) {
-        const errorMessage = (error instanceof Error) ? error.message : "Something went wrong";
-        res.status(200).json({
-            message: errorMessage,
-            success: false,
-            error
-        });
+        (0, errorHandler_1.default)(error, res, 200);
     }
 });
 const borrowedBookSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,27 +53,22 @@ const borrowedBookSummary = (req, res) => __awaiter(void 0, void 0, void 0, func
             }, {
                 $project: {
                     _id: 0,
-                    totalQuantity: 1,
                     book: {
                         title: "$book.title",
                         isbn: "$book.isbn"
-                    }
+                    },
+                    totalQuantity: 1
                 }
             }
         ]);
         res.send({
-            message: "Book borrowed successfully",
+            message: "Borrowed books summary retrieved successfully",
             success: true,
             data
         });
     }
     catch (error) {
-        const errorMessage = (error instanceof Error) ? error.message : "Something went wrong";
-        res.status(200).json({
-            message: errorMessage,
-            success: false,
-            error
-        });
+        (0, errorHandler_1.default)(error, res, 200);
     }
 });
 exports.borrowControllers = {

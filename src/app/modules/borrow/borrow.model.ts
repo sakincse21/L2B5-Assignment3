@@ -38,9 +38,11 @@ borrowSchema.pre('save',async function(next){
     if(!book){
         throw new Error("Book does not exist");
     }
+
     if(book.copies<this.quantity || book.available === false){
         throw new Error("Not enough books are available")
     }
+    
     const remainingCopies = book.copies - this.quantity;
     const availability = await Borrow.setAvailability(this,book);
 
