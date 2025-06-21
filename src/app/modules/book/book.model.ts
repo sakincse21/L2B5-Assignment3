@@ -37,7 +37,7 @@ const bookSchema = new Schema<IBook>({
 })
 
 bookSchema.pre('save',async function(next){
-    if(this.copies==0) this.available=false;
+    if(this.copies===0) this.available=false;
     next();
 })
 

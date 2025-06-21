@@ -6,10 +6,6 @@ const createBook = async (req: Request, res: Response) => {
     try {
         const payload = req.body;
 
-        if (payload?.copies === 0) {
-            payload.available = false;
-        }
-
         const data = await Book.create(payload);
 
         if(!data){
@@ -33,6 +29,7 @@ const getAllBooks = async (req: Request, res: Response) => {
         const sortCheck = sort ? (sort === 'asc' ? '' : '-') : '';
         const sortOption = sortBy ? `${sortCheck}${sortBy}` : `${sortCheck}createdAt`;
         const limitOption = limit ? parseInt(limit as string) : 10;
+        
         const data = await Book.find(filterOption).sort(sortOption).limit(limitOption);
         
         res.status(200).json({
