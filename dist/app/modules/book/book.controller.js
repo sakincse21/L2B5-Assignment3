@@ -18,9 +18,6 @@ const errorHandler_1 = __importDefault(require("../../utils/errorHandler"));
 const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const payload = req.body;
-        if ((payload === null || payload === void 0 ? void 0 : payload.copies) === 0) {
-            payload.available = false;
-        }
         const data = yield book_model_1.default.create(payload);
         if (!data) {
             throw new Error("No Book Created");
