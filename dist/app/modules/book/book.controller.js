@@ -34,12 +34,12 @@ const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { filter, sortBy, sort, limit } = req.query;
+        const { filter, sortBy, sort, limit, offset } = req.query;
         const filterOption = filter ? { genre: filter } : {};
         const sortCheck = sort ? (sort === 'asc' ? '' : '-') : '';
         const sortOption = sortBy ? `${sortCheck}${sortBy}` : `${sortCheck}createdAt`;
-        const limitOption = limit ? parseInt(limit) : 10;
-        const data = yield book_model_1.default.find(filterOption).sort(sortOption).limit(limitOption);
+        const limitOption = limit ? parseInt(limit) : 12;
+        const data = yield book_model_1.default.find(filterOption).sort(sortOption).skip(parseInt(offset)).limit(limitOption);
         res.status(200).json({
             success: true,
             message: "Books retrieved successfully",
