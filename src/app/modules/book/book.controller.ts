@@ -34,11 +34,12 @@ const getAllBooks = async (req: Request, res: Response) => {
         const tempData = await Book.find(filterOption);
         const count = tempData.length;
         const data = await Book.find(filterOption).sort(sortOption).skip(parseInt(offset as string)).limit(limitOption)
-        res.setHeader('Access-Control-Expose-Headers', 'x-count')
-        res.setHeader('x-count', count)
+        // res.setHeader('Access-Control-Expose-Headers', 'x-count')
+        // res.setHeader('x-count', count)
         res.status(200).json({
             success: true,
             message: "Books retrieved successfully",
+            totalCount: count,
             data
         });
     } catch (error: unknown) {
