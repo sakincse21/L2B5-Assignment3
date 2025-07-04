@@ -30,6 +30,8 @@ const getAllBooks = async (req: Request, res: Response) => {
         const sortOption = sortBy ? `${sortCheck}${sortBy}` : `${sortCheck}createdAt`;
         const limitOption = limit ? parseInt(limit as string) : 12;
 
+        // console.log(filterOption,sortOption,parseInt(offset as string),limit);
+        
 
         const tempData = await Book.find(filterOption);
         const count = tempData.length;
