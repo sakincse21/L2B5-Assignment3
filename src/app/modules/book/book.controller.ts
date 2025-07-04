@@ -8,7 +8,7 @@ const createBook = async (req: Request, res: Response) => {
 
         const data = await Book.create(payload);
 
-        if(!data){
+        if (!data) {
             throw new Error("No Book Created");
         }
 
@@ -18,7 +18,7 @@ const createBook = async (req: Request, res: Response) => {
             data
         })
     } catch (error: unknown) {
-        handleError(error,res,200);
+        handleError(error, res, 200);
     }
 }
 
@@ -29,19 +29,20 @@ const getAllBooks = async (req: Request, res: Response) => {
         const sortCheck = sort ? (sort === 'asc' ? '' : '-') : '';
         const sortOption = sortBy ? `${sortCheck}${sortBy}` : `${sortCheck}createdAt`;
         const limitOption = limit ? parseInt(limit as string) : 12;
-        
-        
+
+
         const tempData = await Book.find(filterOption);
         const count = tempData.length;
         const data = await Book.find(filterOption).sort(sortOption).skip(parseInt(offset as string)).limit(limitOption)
-        
-        res.setHeader('x-count', count).status(200).json({
+        res.setHeader('Access-Control-Expose-Headers', 'x-count')
+        res.setHeader('x-count', count)
+        res.status(200).json({
             success: true,
             message: "Books retrieved successfully",
             data
         });
     } catch (error: unknown) {
-        handleError(error,res,200);
+        handleError(error, res, 200);
     }
 }
 
@@ -50,7 +51,7 @@ const getBookById = async (req: Request, res: Response) => {
 
         const bookId = req.params.bookId;
         const data = await Book.findById(bookId);
-        if(!data){
+        if (!data) {
             throw new Error("No Book Found")
         }
         res.status(200).json({
@@ -59,7 +60,7 @@ const getBookById = async (req: Request, res: Response) => {
             data
         });
     } catch (error: unknown) {
-        handleError(error,res,200);
+        handleError(error, res, 200);
     }
 }
 
@@ -77,7 +78,7 @@ const updateBook = async (req: Request, res: Response) => {
 
         const data = await Book.findByIdAndUpdate(bookId, payload, { new: true, runValidators: true });
 
-        if(!data){
+        if (!data) {
             throw new Error("No Book Found")
         }
 
@@ -87,7 +88,7 @@ const updateBook = async (req: Request, res: Response) => {
             data
         });
     } catch (error: unknown) {
-        handleError(error,res,200);
+        handleError(error, res, 200);
     }
 }
 
@@ -111,7 +112,7 @@ const deleteBook = async (req: Request, res: Response) => {
             data: deletedData
         });
     } catch (error: unknown) {
-        handleError(error,res,200);
+        handleError(error, res, 200);
     }
 }
 
