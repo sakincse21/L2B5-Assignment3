@@ -31,9 +31,11 @@ const getAllBooks = async (req: Request, res: Response) => {
         const limitOption = limit ? parseInt(limit as string) : 12;
         
         
-        const data = await Book.find(filterOption).sort(sortOption).skip(parseInt(offset as string)).limit(limitOption);
+        const tempData = await Book.find(filterOption);
+        const count = tempData.length;
+        const data = await Book.find(filterOption).sort(sortOption).skip(parseInt(offset as string)).limit(limitOption)
         
-        res.status(200).json({
+        res.setHeader('x-count', count).status(200).json({
             success: true,
             message: "Books retrieved successfully",
             data
