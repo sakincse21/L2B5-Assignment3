@@ -39,10 +39,15 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const sortCheck = sort ? (sort === 'asc' ? '' : '-') : '';
         const sortOption = sortBy ? `${sortCheck}${sortBy}` : `${sortCheck}createdAt`;
         const limitOption = limit ? parseInt(limit) : 12;
+        const tempData = yield book_model_1.default.find(filterOption);
+        const count = tempData.length;
         const data = yield book_model_1.default.find(filterOption).sort(sortOption).skip(parseInt(offset)).limit(limitOption);
+        // res.setHeader('Access-Control-Expose-Headers', 'x-count')
+        // res.setHeader('x-count', count)
         res.status(200).json({
             success: true,
             message: "Books retrieved successfully",
+            totalCount: count,
             data
         });
     }
